@@ -365,6 +365,8 @@ def get_device(inode):
         return os.makedev((node.old_id >> 8) & 0xff, node.old_id & 0xff)
     return None
 
+def b2ascii(b):
+    return b.decode('ascii')
 
 def dump_fs(fs, target):
     node_dict = {}
@@ -396,7 +398,7 @@ def dump_fs(fs, target):
         for pnode in pnodes:
             node_names.append(pnode.name)
         node_names.append(dirent.name)
-        path = '/'.join(str(node_names))
+        path = '/'.join(map(b2ascii, node_names))
 
         target_path = os.path.join(os.getcwd(), target, path)
         for inode in dirent.inodes:
